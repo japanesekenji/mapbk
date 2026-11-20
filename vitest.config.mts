@@ -25,6 +25,17 @@ export default defineConfig({
           testTimeout: 20_000,
         },
       },
+      {
+        resolve: { alias },
+        test: {
+          name: "api",
+          // HTTP tests against the running dev server (docker compose up app).
+          include: ["tests/api/**/*.test.ts"],
+          environment: "node",
+          fileParallelism: false,
+          testTimeout: 30_000,
+        },
+      },
     ],
   },
 });

@@ -39,6 +39,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"incident_photos": {
+                  Row: {
+                    "created_at": string,"id": string,"incident_id": string,"storage_path": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"incident_id": string,"storage_path": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"incident_id"?: string,"storage_path"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "incident_photos_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "incident_photos_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents_public"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"incidents": {
                   Row: {
                     "area": unknown,"category_id": string,"corroboration_count": number,"description": string,"id": string,"location": unknown,"location_accuracy_m": number | null,"place_name": string | null,"reported_at": string,"reporter_id": string,"severity": Database["public"]['Enums']["severity"],"status": Database["public"]['Enums']["incident_status"],"title": string,"updated_at": string

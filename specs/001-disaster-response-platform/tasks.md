@@ -109,20 +109,20 @@ photos; reports start Pending.
 
 ### Tests for User Story 2 (constitution V: report submission)
 
-- [ ] T041 [P] [US2] Write Vitest tests for `POST /api/reports` validation and rate limiting in `tests/unit/reports-route.test.ts`: missing category, description over the data-model.md incidents.description limit, location outside the service area (`422`), 5 photo paths (`400`), 11th report in an hour (`429`)
-- [ ] T042 [P] [US2] Write Playwright test `tests/e2e/report.spec.ts`: sign in as citizen, choose Flood, keep the pin, enter a description, attach 2 photos, submit; assert the report shows as Pending on the map, and a fifth photo is refused
+- [X] T041 [P] [US2] Write Vitest HTTP tests (project `api`, needs the dev server) for `POST /api/reports` validation and rate limiting in `tests/api/reports.test.ts`: missing category, description over the data-model.md incidents.description limit, location outside the service area (`422`), 5 photo paths (`400`), 11th report in an hour (`429`)
+- [X] T042 [P] [US2] Write Playwright test `tests/e2e/report.spec.ts`: sign in as citizen, choose Flood, keep the pin, enter a description, attach 2 photos, submit; assert the report shows as Pending on the map, and a fifth photo is refused
 
 ### Implementation for User Story 2
 
-- [ ] T043 [US2] Create `supabase/migrations/0201_incident_photos.sql`: table `incident_photos` with data-model.md incident_photos.id, incident_photos.incident_id, incident_photos.storage_path, incident_photos.created_at; trigger enforcing the 4-photo limit; storage bucket `incident-photos` with the MIME types and 10 MB limit per contracts/database.md Storage
-- [ ] T044 [P] [US2] Create `src/lib/validation/report.ts`: zod schema for the `POST /api/reports` body per contracts/http-api.md, citing data-model.md incidents.category_id, incidents.description, incidents.location, incidents.location_accuracy_m, incidents.place_name
-- [ ] T045 [US2] Create `src/app/api/uploads/route.ts` per contracts/http-api.md "POST /api/uploads": signed-in only, `upload` rate limit 40 per hour, rejects over 10 MB (`413`) and other types (`415`), returns a signed upload URL under `pending/<user>/`
-- [ ] T046 [US2] Create `src/app/api/reports/route.ts` per contracts/http-api.md "POST /api/reports": signed-in only (`401`), `report` rate limit 10 per hour, validates with `src/lib/validation/report.ts`, inserts the incident with data-model.md incidents.status `pending`, incidents.severity from data-model.md categories.default_severity, incidents.title defaulted from category label and place, incidents.reporter_id from the session, then moves photos from `pending/` and inserts `incident_photos` rows
-- [ ] T047 [P] [US2] Create `src/components/report/CategoryGrid.tsx` (Flood, Fire, Earthquake, Landslide, Accident, More expanding to all categories) per handoff mobile screen 3
-- [ ] T048 [P] [US2] Create `src/components/report/LocationPicker.tsx`: GPS capture with accuracy display (FR-016), draggable pin on a mini map, reverse-geocoded place name, warning when accuracy is worse than ±100 m
-- [ ] T049 [P] [US2] Create `src/components/report/PhotoPicker.tsx`: up to 4 photos, client compression to 1600 px and under about 600 KB with `browser-image-compression` (research R8), upload through `/api/uploads`
-- [ ] T050 [US2] Create `src/app/(public)/report/page.tsx`: category, location, details and photos on one scrollable screen with a sticky Submit button (handoff screen 3); redirects Visitors to sign-in; keeps the draft in session storage on failure and offers retry (FR-019); field-level error messages
-- [ ] T051 [US2] Link the desktop "Report Hazard" button and the mobile Report FAB to `/report`, and after success return to the map with the new incident selected
+- [X] T043 [US2] Create `supabase/migrations/0201_incident_photos.sql`: table `incident_photos` with data-model.md incident_photos.id, incident_photos.incident_id, incident_photos.storage_path, incident_photos.created_at; trigger enforcing the 4-photo limit; storage bucket `incident-photos` with the MIME types and 10 MB limit per contracts/database.md Storage
+- [X] T044 [P] [US2] Create `src/lib/validation/report.ts`: zod schema for the `POST /api/reports` body per contracts/http-api.md, citing data-model.md incidents.category_id, incidents.description, incidents.location, incidents.location_accuracy_m, incidents.place_name
+- [X] T045 [US2] Create `src/app/api/uploads/route.ts` per contracts/http-api.md "POST /api/uploads": signed-in only, `upload` rate limit 40 per hour, rejects over 10 MB (`413`) and other types (`415`), returns a signed upload URL under `pending/<user>/`
+- [X] T046 [US2] Create `src/app/api/reports/route.ts` per contracts/http-api.md "POST /api/reports": signed-in only (`401`), `report` rate limit 10 per hour, validates with `src/lib/validation/report.ts`, inserts the incident with data-model.md incidents.status `pending`, incidents.severity from data-model.md categories.default_severity, incidents.title defaulted from category label and place, incidents.reporter_id from the session, then moves photos from `pending/` and inserts `incident_photos` rows
+- [X] T047 [P] [US2] Create `src/components/report/CategoryGrid.tsx` (Flood, Fire, Earthquake, Landslide, Accident, More expanding to all categories) per handoff mobile screen 3
+- [X] T048 [P] [US2] Create `src/components/report/LocationPicker.tsx`: GPS capture with accuracy display (FR-016), draggable pin on a mini map, reverse-geocoded place name, warning when accuracy is worse than ±100 m
+- [X] T049 [P] [US2] Create `src/components/report/PhotoPicker.tsx`: up to 4 photos, client compression to 1600 px and under about 600 KB with `browser-image-compression` (research R8), upload through `/api/uploads`
+- [X] T050 [US2] Create `src/app/(public)/report/page.tsx`: category, location, details and photos on one scrollable screen with a sticky Submit button (handoff screen 3); redirects Visitors to sign-in; keeps the draft in session storage on failure and offers retry (FR-019); field-level error messages
+- [X] T051 [US2] Link the desktop "Report Hazard" button and the mobile Report FAB to `/report`, and after success return to the map with the new incident selected
 
 **Checkpoint**: US2 works with US1 (new report appears on the map) and its tests pass.
 

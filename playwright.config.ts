@@ -9,7 +9,12 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   reporter: [["list"]],
-  use: { baseURL, trace: "retain-on-failure" },
+  use: {
+    baseURL,
+    trace: "retain-on-failure",
+    geolocation: { latitude: 14.5764, longitude: 121.0851 },
+    permissions: ["geolocation"],
+  },
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
