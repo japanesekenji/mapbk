@@ -19,6 +19,38 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"corroborations": {
+                  Row: {
+                    "created_at": string,"incident_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"incident_id": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"incident_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "corroborations_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "corroborations_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents_public"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "corroborations_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"facilities": {
                   Row: {
                     "address": string,"capacity": number | null,"contact_phone": string | null,"created_at": string,"id": string,"location": unknown,"name": string,"status": Database["public"]['Enums']["facility_status"],"status_updated_at": string | null,"status_updated_by": string | null,"type": Database["public"]['Enums']["facility_type"]
@@ -59,6 +91,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     },{
       foreignKeyName: "incident_photos_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents_public"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"incident_status_changes": {
+                  Row: {
+                    "changed_at": string,"changed_by": string,"from_severity": Database["public"]['Enums']["severity"] | null,"from_status": Database["public"]['Enums']["incident_status"],"id": number,"incident_id": string,"note": string | null,"to_severity": Database["public"]['Enums']["severity"] | null,"to_status": Database["public"]['Enums']["incident_status"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "changed_at"?: string,"changed_by": string,"from_severity"?: Database["public"]['Enums']["severity"] | null,"from_status": Database["public"]['Enums']["incident_status"],"id"?: never,"incident_id": string,"note"?: string | null,"to_severity"?: Database["public"]['Enums']["severity"] | null,"to_status": Database["public"]['Enums']["incident_status"]
+                  }
+                  Update: {
+                    "changed_at"?: string,"changed_by"?: string,"from_severity"?: Database["public"]['Enums']["severity"] | null,"from_status"?: Database["public"]['Enums']["incident_status"],"id"?: never,"incident_id"?: string,"note"?: string | null,"to_severity"?: Database["public"]['Enums']["severity"] | null,"to_status"?: Database["public"]['Enums']["incident_status"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "incident_status_changes_changed_by_fkey"
+      columns: ["changed_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "incident_status_changes_incident_id_fkey"
+      columns: ["incident_id"]
+isOneToOne: false
+      referencedRelation: "incidents"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "incident_status_changes_incident_id_fkey"
       columns: ["incident_id"]
 isOneToOne: false
       referencedRelation: "incidents_public"
@@ -190,6 +254,9 @@ isOneToOne: false
 "in_service_area":
 { Args: { "p": unknown }; Returns: boolean
                            },
+"incident_detail":
+{ Args: { "incident_id": string }; Returns: Json
+                           },
 "incident_summary":
 { Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"since"?: string }; Returns: Json
                            },
@@ -218,11 +285,22 @@ isOneToOne: false
         isOneToOne: false
         isSetofReturn: true
       } },
+"moderation_queue":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "category_id": string,"category_label": string,"corroboration_count": number,"description": string,"id": string,"lat": number,"lng": number,"photo_paths": (string)[],"place_name": string,"reported_at": string,"reporter_name": string,"severity": Database["public"]['Enums']["severity"],"status": Database["public"]['Enums']["incident_status"],"title": string
+            }[]
+                           },
+"my_corroborations":
+{ Args: { "incident_ids": (string)[] }; Returns: string[]
+                           },
 "rate_limit_hit":
 { Args: { "p_action": string,"p_limit": number,"p_subject": string }; Returns: number
                            },
 "require_role":
 { Args: { "allowed": (Database["public"]['Enums']["app_role"])[] }; Returns: undefined
+                           },
+"set_incident_status":
+{ Args: { "expected_status": Database["public"]['Enums']["incident_status"],"incident_id": string,"new_severity"?: Database["public"]['Enums']["severity"],"new_status": Database["public"]['Enums']["incident_status"],"note"?: string }; Returns: Json
                            },
 "set_sos_state":
 { Args: { "new_state": Database["public"]['Enums']["sos_state"],"sos_id": string }; Returns: {
@@ -298,7 +376,10 @@ isOneToOne: false
         to: "sos_responder_view"
         isOneToOne: false
         isSetofReturn: true
-      } }
+      } },
+"toggle_corroboration":
+{ Args: { "incident_id": string }; Returns: Json
+                           }
           }
           Enums: {
             "app_role": "citizen"|"moderator"|"responder"|"admin","category_group": "natural"|"human_induced"|"facility"|"community","facility_status": "open"|"full"|"closed"|"unknown","facility_type": "evacuation_center"|"hospital"|"police_station"|"fire_station"|"rescue_station"|"relief_center","incident_status": "pending"|"verified"|"resolved"|"rejected","severity": "critical"|"high"|"moderate"|"low","sos_state": "new"|"acknowledged"|"responding"|"closed","sos_type": "medical"|"trapped_flood"|"fire"|"other"

@@ -9,6 +9,7 @@ import { ErrorState } from "@/components/layout/States";
 import { canSeeSos, useProfile } from "@/lib/auth/useProfile";
 import { distanceKm, formatDistance, type Bounds, type LatLng } from "@/lib/geo";
 import { useLiveRefresh } from "@/lib/realtime";
+import { useCorroboration } from "@/lib/useCorroboration";
 import {
   ALL_LAYERS,
   CATEGORY_ICON,
@@ -201,7 +202,9 @@ export function MapScreen({
   }
 
   const recent = data.incidents.slice(0, 5);
-  const corroboration = selection?.kind === "incident" ? corroborationFor?.(selection.item.id) : undefined;
+  const selectedIncident = selection?.kind === "incident" ? selection.item : null;
+  const liveCorroboration = useCorroboration(selectedIncident?.id ?? null, selectedIncident?.corroboration_count ?? 0);
+  const corroboration = selectedIncident ? (corroborationFor?.(selectedIncident.id) ?? liveCorroboration) : undefined;
 
   return (
     <div className="flex min-h-0 flex-1 gap-4 md:p-4">

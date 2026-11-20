@@ -55,7 +55,7 @@ export function DesktopHeader() {
               }`}
             >
               <Icon name={item.icon} size={19} />
-              <span className="hidden xl:inline">{item.label}</span>
+              <span className={nav.length > 4 ? "hidden 2xl:inline" : "hidden xl:inline"}>{item.label}</span>
             </Link>
           );
         })}

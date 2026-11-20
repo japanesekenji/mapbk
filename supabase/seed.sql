@@ -196,4 +196,37 @@ from (values
   (5, null, '09181110005', 'trapped_flood', 14.6340, 121.0990, 15, null, 2, 'Rescued by barangay boat.', 'closed', '44444444-4444-4444-8444-444444444444'::uuid, 180)
 ) as s(n, sender, phone, type, lat, lng, acc, landmark, people, notes, state, assigned, mins);
 
+-- ---------------------------------------------------------------------------
+-- Part 4 (T070): status history, one rejected report, sample corroborations
+-- ---------------------------------------------------------------------------
+
+-- A duplicate report rejected by the moderator (hidden from public views).
+insert into public.incidents (category_id, title, description, location, place_name, severity, status, reporter_id, reported_at)
+values ('flood', 'Flood near Tatalon (duplicate)', 'Same flooding as the verified Tatalon report.',
+        extensions.st_setsrid(extensions.st_makepoint(121.0150, 14.6222), 4326)::extensions.geography,
+        'Brgy. Tatalon, Quezon City', 'high', 'rejected', '22222222-2222-4222-8222-222222222222', now() - interval '50 minutes');
+
+-- Verified, resolved and rejected incidents get the history a moderator would have left.
+insert into public.incident_status_changes (incident_id, from_status, to_status, changed_by, note, changed_at)
+select i.id, 'pending', case when i.status = 'rejected' then 'rejected'::public.incident_status else 'verified' end,
+       '33333333-3333-4333-8333-333333333333',
+       case when i.status = 'rejected' then 'Duplicate of an existing report.' else 'Confirmed with barangay officials.' end,
+       i.reported_at + (now() - i.reported_at) / 3
+from public.incidents i
+where i.status in ('verified', 'resolved', 'rejected');
+
+insert into public.incident_status_changes (incident_id, from_status, to_status, changed_by, note, changed_at)
+select i.id, 'verified', 'resolved', '33333333-3333-4333-8333-333333333333', 'Cleared on site.',
+       i.reported_at + (now() - i.reported_at) * 2 / 3
+from public.incidents i
+where i.status = 'resolved';
+
+-- The second citizen corroborates a few of the first citizen's reports.
+insert into public.corroborations (incident_id, user_id)
+select i.id, '22222222-2222-4222-8222-222222222222'
+from public.incidents i
+where i.reporter_id = '11111111-1111-4111-8111-111111111111' and i.status in ('pending', 'verified')
+order by i.reported_at desc
+limit 4;
+
 commit;
