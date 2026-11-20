@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/icons/Icon";
 import { ErrorState } from "@/components/layout/States";
 import { canSeeSos, useProfile } from "@/lib/auth/useProfile";
@@ -17,6 +17,8 @@ import {
   FACILITY_META,
   LAYER_GROUPS,
   SEVERITY_META,
+  SOS_COLOR,
+  SOS_TYPE_META,
   type LayerId,
 } from "@/lib/taxonomy";
 import type { TimeRange } from "@/lib/time";
@@ -50,6 +52,7 @@ export function MapScreen({
   corroborationFor?: (incidentId: string) => CorroborationProps | undefined;
 }) {
   const params = useSearchParams();
+  const router = useRouter();
   const { profile } = useProfile();
   const mapRef = useRef<MapViewHandle>(null);
   const [bounds, setBounds] = useState<Bounds | null>(null);
@@ -63,10 +66,10 @@ export function MapScreen({
   const [userLocation, setUserLocation] = useState<LatLng | null>(null);
   const [locateError, setLocateError] = useState<string | null>(null);
 
-  const data = useMapData(bounds, range);
-  useLiveRefresh("incidents", data.reload);
-
   const sosAllowed = canSeeSos(profile?.role);
+  const data = useMapData(bounds, range, sosAllowed && !!layers.sos);
+  useLiveRefresh("incidents", data.reload);
+  useLiveRefresh("sos_requests", data.reload, { enabled: sosAllowed && !!layers.sos });
 
   const { points, areas, counts } = useMemo(() => {
     const counts: Record<LayerId, number> = {};
@@ -100,9 +103,23 @@ export function MapScreen({
         label: `${f.name}, ${f.status}`,
       });
     }
-    if (layers.sos && sosAllowed) points.push(...extraPoints);
+    if (layers.sos && sosAllowed) {
+      for (const s of data.sos) {
+        if (s.lat == null || s.lng == null || !s.type) continue;
+        points.push({
+          id: `s:${s.id}`,
+          lat: s.lat,
+          lng: s.lng,
+          color: SOS_COLOR,
+          icon: SOS_TYPE_META[s.type].icon,
+          label: `SOS ${SOS_TYPE_META[s.type].label}`,
+        });
+      }
+      points.push(...extraPoints);
+    }
+    counts.sos = data.sos.length;
     return { points, areas, counts };
-  }, [data.incidents, data.facilities, layers, extraPoints, sosAllowed]);
+  }, [data.incidents, data.facilities, data.sos, layers, extraPoints, sosAllowed]);
 
   const selection: Selection | null = useMemo(() => {
     if (!selectedId) return null;
@@ -124,7 +141,13 @@ export function MapScreen({
     return formatDistance(distanceKm(userLocation, p));
   }, [selection, userLocation]);
 
-  const pick = useCallback((id: string | null) => setSelectedId(id), []);
+  const pick = useCallback((id: string | null) => {
+    if (id?.startsWith("s:")) {
+      router.push("/respond");
+      return;
+    }
+    setSelectedId(id);
+  }, [router]);
 
   // A link with ?select=<id> (for example after submitting a report) centers that incident once.
   const flewToParam = useRef(false);

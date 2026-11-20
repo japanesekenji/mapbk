@@ -14,3 +14,6 @@ export type IncidentSummary = { total: number; critical: number; high: number; m
 export type Selection =
   | { kind: "incident"; item: IncidentPublic }
   | { kind: "facility"; item: FacilityRow };
+
+/** SOS row shown to responders (sos_responder_view). */
+export type SosPin = Database["public"]["Views"]["sos_responder_view"]["Row"];

@@ -171,4 +171,29 @@ from (values
   ('Red Cross Pasig Chapter',           'relief_center',     14.5760, 121.0700, 'Pasig City',                    '143',          null,      'open',    7)
 ) as f(name, type, lat, lng, addr, phone, cap, st, hrs);
 
+-- ---------------------------------------------------------------------------
+-- Part 3 (T057): sample SOS requests (responders and admins only)
+-- ---------------------------------------------------------------------------
+
+delete from public.sos_requests;
+
+insert into public.sos_requests (
+  sender_id, sender_kind, contact_phone, type, location, location_accuracy_m, landmark,
+  people_count, notes, state, assigned_to, tracking_token_hash, device_id, created_at, state_updated_at
+)
+select
+  s.sender, case when s.sender is null then 'visitor' else 'user' end, s.phone, s.type::public.sos_type,
+  case when s.lat is null then null
+       else extensions.st_setsrid(extensions.st_makepoint(s.lng, s.lat), 4326)::extensions.geography end,
+  s.acc, s.landmark, s.people, s.notes, s.state::public.sos_state, s.assigned,
+  encode(extensions.digest('seed-sos-' || s.n, 'sha256'), 'hex'), 'seed-device-' || s.n,
+  now() - make_interval(mins => s.mins), now() - make_interval(mins => greatest(s.mins - 5, 0))
+from (values
+  (1, null::uuid, '09181110001', 'trapped_flood', 14.6420, 121.0950, 8, null::text, 4, 'Two seniors, one child. Second floor, water rising.', 'new', null::uuid, 6),
+  (2, '11111111-1111-4111-8111-111111111111'::uuid, '09171234501', 'medical', 14.6230, 121.0160, 12, null, 1, 'Diabetic neighbor, insulin ran out.', 'acknowledged', '44444444-4444-4444-8444-444444444444'::uuid, 25),
+  (3, null, '09181110003', 'fire', 14.5720, 121.0600, 20, null, 6, 'Fire next door, smoke entering house.', 'responding', '44444444-4444-4444-8444-444444444444'::uuid, 40),
+  (4, '22222222-2222-4222-8222-222222222222'::uuid, '09171234502', 'other', null, null, null, 'Behind Malanday Elementary School, blue gate', 3, 'Roof damaged, need tarps.', 'new', null, 12),
+  (5, null, '09181110005', 'trapped_flood', 14.6340, 121.0990, 15, null, 2, 'Rescued by barangay boat.', 'closed', '44444444-4444-4444-8444-444444444444'::uuid, 180)
+) as s(n, sender, phone, type, lat, lng, acc, landmark, people, notes, state, assigned, mins);
+
 commit;

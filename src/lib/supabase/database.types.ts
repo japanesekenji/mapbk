@@ -119,6 +119,32 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"sos_requests": {
+                  Row: {
+                    "assigned_to": string | null,"contact_phone": string,"created_at": string,"device_id": string,"id": string,"landmark": string | null,"location": unknown,"location_accuracy_m": number | null,"notes": string | null,"people_count": number,"sender_id": string | null,"sender_kind": string,"state": Database["public"]['Enums']["sos_state"],"state_updated_at": string,"tracking_token_hash": string,"type": Database["public"]['Enums']["sos_type"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "assigned_to"?: string | null,"contact_phone": string,"created_at"?: string,"device_id": string,"id"?: string,"landmark"?: string | null,"location"?: unknown,"location_accuracy_m"?: number | null,"notes"?: string | null,"people_count": number,"sender_id"?: string | null,"sender_kind": string,"state"?: Database["public"]['Enums']["sos_state"],"state_updated_at"?: string,"tracking_token_hash": string,"type": Database["public"]['Enums']["sos_type"]
+                  }
+                  Update: {
+                    "assigned_to"?: string | null,"contact_phone"?: string,"created_at"?: string,"device_id"?: string,"id"?: string,"landmark"?: string | null,"location"?: unknown,"location_accuracy_m"?: number | null,"notes"?: string | null,"people_count"?: number,"sender_id"?: string | null,"sender_kind"?: string,"state"?: Database["public"]['Enums']["sos_state"],"state_updated_at"?: string,"tracking_token_hash"?: string,"type"?: Database["public"]['Enums']["sos_type"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "sos_requests_assigned_to_fkey"
+      columns: ["assigned_to"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "sos_requests_sender_id_fkey"
+      columns: ["sender_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 }
           }
           Views: {
@@ -133,6 +159,20 @@ isOneToOne: false
       columns: ["category_id"]
 isOneToOne: false
       referencedRelation: "categories"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"sos_responder_view": {
+                  Row: {
+                    "assigned_name": string | null,"assigned_to": string | null,"contact_phone": string,"created_at": string,"id": string,"landmark": string | null,"lat": number | null,"lng": number | null,"location_accuracy_m": number | null,"notes": string | null,"people_count": number,"sender_kind": string,"sender_name": string | null,"state": Database["public"]['Enums']["sos_state"],"state_updated_at": string,"type": Database["public"]['Enums']["sos_type"]
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "sos_requests_assigned_to_fkey"
+      columns: ["assigned_to"]
+isOneToOne: false
+      referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
                   ]
@@ -180,7 +220,85 @@ isOneToOne: false
       } },
 "rate_limit_hit":
 { Args: { "p_action": string,"p_limit": number,"p_subject": string }; Returns: number
-                           }
+                           },
+"require_role":
+{ Args: { "allowed": (Database["public"]['Enums']["app_role"])[] }; Returns: undefined
+                           },
+"set_sos_state":
+{ Args: { "new_state": Database["public"]['Enums']["sos_state"],"sos_id": string }; Returns: {
+              "assigned_name": string | null,
+"assigned_to": string | null,
+"contact_phone": string,
+"created_at": string,
+"id": string,
+"landmark": string | null,
+"lat": number | null,
+"lng": number | null,
+"location_accuracy_m": number | null,
+"notes": string | null,
+"people_count": number,
+"sender_kind": string,
+"sender_name": string | null,
+"state": Database["public"]['Enums']["sos_state"],
+"state_updated_at": string,
+"type": Database["public"]['Enums']["sos_type"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "sos_responder_view"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"sos_in_bbox":
+{ Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"states"?: (Database["public"]['Enums']["sos_state"])[] }; Returns: {
+              "assigned_name": string | null,
+"assigned_to": string | null,
+"contact_phone": string,
+"created_at": string,
+"id": string,
+"landmark": string | null,
+"lat": number | null,
+"lng": number | null,
+"location_accuracy_m": number | null,
+"notes": string | null,
+"people_count": number,
+"sender_kind": string,
+"sender_name": string | null,
+"state": Database["public"]['Enums']["sos_state"],
+"state_updated_at": string,
+"type": Database["public"]['Enums']["sos_type"]
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "sos_responder_view"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
+"sos_list":
+{ Args: { "page"?: number,"page_size"?: number,"states"?: (Database["public"]['Enums']["sos_state"])[] }; Returns: {
+              "assigned_name": string | null,
+"assigned_to": string | null,
+"contact_phone": string,
+"created_at": string,
+"id": string,
+"landmark": string | null,
+"lat": number | null,
+"lng": number | null,
+"location_accuracy_m": number | null,
+"notes": string | null,
+"people_count": number,
+"sender_kind": string,
+"sender_name": string | null,
+"state": Database["public"]['Enums']["sos_state"],
+"state_updated_at": string,
+"type": Database["public"]['Enums']["sos_type"]
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "sos_responder_view"
+        isOneToOne: false
+        isSetofReturn: true
+      } }
           }
           Enums: {
             "app_role": "citizen"|"moderator"|"responder"|"admin","category_group": "natural"|"human_induced"|"facility"|"community","facility_status": "open"|"full"|"closed"|"unknown","facility_type": "evacuation_center"|"hospital"|"police_station"|"fire_station"|"rescue_station"|"relief_center","incident_status": "pending"|"verified"|"resolved"|"rejected","severity": "critical"|"high"|"moderate"|"low","sos_state": "new"|"acknowledged"|"responding"|"closed","sos_type": "medical"|"trapped_flood"|"fire"|"other"
