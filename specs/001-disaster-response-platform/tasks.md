@@ -208,10 +208,10 @@ management and CSV import.
 
 **Independent Test**: quickstart V13.
 
-- [ ] T082 [US6] Create `supabase/migrations/0601_list_rpc.sql`: function `list_incidents` per contracts/database.md (search on title, description and place; status, category and time filters; pagination with total)
-- [ ] T083 [P] [US6] Create `src/components/incidents/IncidentTable.tsx` (desktop grid columns per handoff 1b) and `src/components/incidents/IncidentCardMobile.tsx` (handoff mobile screen 2)
-- [ ] T084 [P] [US6] Create `src/components/incidents/ListToolbar.tsx`: search, status segments (All, Verified, Pending, Resolved), category and time-range dropdowns, "Sort: Newest"
-- [ ] T085 [US6] Create `src/app/(public)/incidents/page.tsx`: filters kept in the URL query, pagination with "Showing X–Y of Z", rows open `/incidents/[id]`, "No incidents match" empty state with a clear-filters action, live refresh from `src/lib/realtime.ts`
+- [X] T082 [US6] Create `supabase/migrations/0601_list_rpc.sql`: function `list_incidents` per contracts/database.md (search on title, description and place; status, category and time filters; pagination with total)
+- [X] T083 [P] [US6] Create `src/components/incidents/IncidentTable.tsx` (desktop grid columns per handoff 1b) and `src/components/incidents/IncidentCardMobile.tsx` (handoff mobile screen 2)
+- [X] T084 [P] [US6] Create `src/components/incidents/ListToolbar.tsx`: search, status segments (All, Verified, Pending, Resolved), category and time-range dropdowns, "Sort: Newest"
+- [X] T085 [US6] Create `src/app/(public)/incidents/page.tsx`: filters kept in the URL query, pagination with "Showing X–Y of Z", rows open `/incidents/[id]`, "No incidents match" empty state with a clear-filters action, live refresh from `src/lib/realtime.ts`
 
 **Checkpoint**: all six stories work independently.
 

@@ -295,6 +295,9 @@ isOneToOne: false
         isOneToOne: false
         isSetofReturn: true
       } },
+"list_incidents":
+{ Args: { "category_ids"?: (string)[],"page"?: number,"page_size"?: number,"q"?: string,"since"?: string,"statuses"?: (Database["public"]['Enums']["incident_status"])[] }; Returns: Json
+                           },
 "moderation_queue":
 { Args: Record<PropertyKey, never>; Returns: {
               "category_id": string,"category_label": string,"corroboration_count": number,"description": string,"id": string,"lat": number,"lng": number,"photo_paths": (string)[],"place_name": string,"reported_at": string,"reporter_name": string,"severity": Database["public"]['Enums']["severity"],"status": Database["public"]['Enums']["incident_status"],"title": string
