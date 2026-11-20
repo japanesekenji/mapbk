@@ -11,7 +11,7 @@ const GRID = "grid grid-cols-[minmax(0,2.4fr)_minmax(0,1.2fr)_120px_120px_130px_
 export function IncidentTable({ rows }: { rows: IncidentPublic[] }) {
   return (
     <div role="table" aria-label="Incidents">
-      <div role="row" className={`${GRID} h-11 text-[12px] font-bold uppercase tracking-[.07em] text-[#6b7c70]`}>
+      <div role="row" className={`${GRID} h-11 text-[12px] font-bold uppercase tracking-[.07em] text-[#627266]`}>
         {["Incident", "Category", "Severity", "Status", "Reported", "Corroborated", ""].map((h, i) => (
           <span role="columnheader" key={i}>{h}</span>
         ))}

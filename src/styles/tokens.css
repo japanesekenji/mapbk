@@ -11,8 +11,8 @@
   --bk-text-3: #44574a;
   --bk-text-4: #2c4234;
   --bk-text-body: #1c3326;
-  --bk-muted: #7a8a7f;
-  --bk-table-head: #6b7c70;
+  --bk-muted: #627266; /* handoff #7a8a7f was 3.6:1; darkened to meet 4.5:1 */
+  --bk-table-head: #627266; /* handoff #6b7c70 was 4.4:1 */
 
   /* Surfaces */
   --bk-bg: #f3f6f1;

@@ -6,6 +6,19 @@ corroborate reports, and send SOS requests. Moderators verify incidents; respond
 
 Specs, plan and task list: [`specs/001-disaster-response-platform/`](specs/001-disaster-response-platform/).
 
+## Features
+
+| Feature | Where | Who |
+|---|---|---|
+| Hazard map with layers, time range, place search, live updates | `/` | Everyone |
+| Report a hazard with GPS, adjustable pin and up to 4 photos | `/report` | Signed-in users |
+| Corroborate reports; moderators verify, resolve or reject with history | `/incidents/[id]`, `/moderate` | Users / moderators |
+| Emergency SOS without an account, with tracking | `/sos` | Everyone |
+| SOS console with live alerts and response states | `/respond` | Responders, admins |
+| Nearest facilities by true distance, operating status | `/facilities` | Everyone |
+| Facility status, CSV import, role assignment | `/admin` | Moderators (status), admins |
+| Incident list with search, filters, pagination | `/incidents` | Everyone |
+
 ## Stack
 
 Next.js 16 (App Router, TypeScript, Tailwind CSS 4), MapLibre GL with OpenFreeMap tiles, and
@@ -81,6 +94,30 @@ Test accounts created by `supabase/seed.sql` for local and demo projects only:
 
 Change or remove these before using a public deployment for anything real.
 
+## Tests
+
+`docker compose exec app npm test` runs, in order:
+
+| Suite | What it covers |
+|---|---|
+| `test:unit` | Geo, time and validation helpers |
+| `test:db` | RLS and RPC rules per role: SOS access, status changes, corroboration, privileges |
+| `test:api` | Route handlers over HTTP: reports, uploads, SOS, facilities import (needs the dev server) |
+| `test:e2e` | Playwright: report, SOS, moderation, accessibility (axe) on desktop and phone viewports |
+
+Database and API tests change seed data; run `npm run db:reset` for a clean demo afterwards.
+Scenario-by-scenario results: [demo-validation.md](specs/001-disaster-response-platform/checklists/demo-validation.md).
+
+## Known limitations
+
+- **Slow networks.** Map pins take about 24 s to appear on Chrome's "Slow 3G" profile (9 s on
+  "Fast 3G", 3.7 s on 4G) because MapLibre GL is large. The spec's 3-second target (SC-004) is
+  not met. Ways to close the gap: a server-rendered list of nearby incidents shown before the map,
+  a lighter raster map for slow connections, or caching the app with a service worker.
+- **Place search** uses the public Nominatim service (1 request per second). Use a paid geocoder
+  for real traffic.
+- **Not deployed yet.** Deploying needs a hosted Supabase project and a Vercel account.
+
 ## Scripts (run inside the container)
 
 | Script | What it does |
@@ -91,4 +128,6 @@ Change or remove these before using a public deployment for anything real.
 | `npm run db:reset` | Recreate local database from migrations and seed |
 | `npm run db:types` | Regenerate `src/lib/supabase/database.types.ts` |
 | `npm run db:push` / `db:seed` | Apply migrations / seed to the database in `SUPABASE_DB_URL` |
-| `npm test` | Unit, database-policy and Playwright tests |
+| `npm test` | Unit, database, API and Playwright tests |
+| `node scripts/perf.mjs <url> <runs> <profile>` | Time to map pins under network throttling |
+| `node scripts/shot.mjs <path> <out.png> <w> <h> [email]` | Headless screenshot, optionally signed in |

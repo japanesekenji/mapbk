@@ -30,6 +30,13 @@ export function applyPalette(map: MlMap) {
       } else if (layer.type === "symbol" && /place|label|city|town|village|suburb/.test(id)) {
         map.setPaintProperty(layer.id, "text-color", PALETTE.label);
       }
+      // One less glyph download on slow networks: render italic labels (water names) upright.
+      if (layer.type === "symbol") {
+        const font = map.getLayoutProperty(layer.id, "text-font") as unknown;
+        if (Array.isArray(font) && font.some((f) => typeof f === "string" && f.includes("Italic"))) {
+          map.setLayoutProperty(layer.id, "text-font", ["Noto Sans Regular"]);
+        }
+      }
     } catch {
       // Some layers use expressions we leave alone.
     }

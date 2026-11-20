@@ -92,7 +92,7 @@ function ResponderConsole() {
           id: r.id!,
           lat: r.lat!,
           lng: r.lng!,
-          color: r.state === "closed" ? "#7a8a7f" : SOS_COLOR,
+          color: r.state === "closed" ? "#627266" : SOS_COLOR,
           icon: SOS_TYPE_META[r.type!].icon,
           label: `SOS ${SOS_TYPE_META[r.type!].label}, ${r.state}`,
         })),

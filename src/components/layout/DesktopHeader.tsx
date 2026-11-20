@@ -32,8 +32,8 @@ export function DesktopHeader() {
 
   return (
     <header className="flex h-[72px] shrink-0 items-center gap-4 border-b border-line bg-white px-4 lg:gap-7 lg:px-6">
-      <Link href="/" className="flex items-center gap-3" aria-label="Bakunawa home">
-        <Image src="/brand/bakunawa-mark.png" alt="" width={46} height={44} priority />
+      <Link href="/" className="flex items-center gap-3">
+        <Image src="/brand/bakunawa-mark.png" alt="Bakunawa home" width={46} height={44} priority />
         <span className="hidden leading-tight lg:block">
           <span className="font-display block text-[20px] font-extrabold tracking-[.05em] text-ink">
             BAKUNAWA

@@ -219,12 +219,12 @@ management and CSV import.
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T086 [P] Write `README.md`: what Bakunawa is, stack summary linking research.md, Docker-based setup, demo accounts, demo script following quickstart.md
-- [ ] T087 Accessibility pass on all pages in `src/app/`: 4.5:1 text contrast, focus states, labels on icon buttons, keyboard access to the layer panel and dialogs
-- [ ] T088 Performance pass: check SC-004 with Chrome slow 3G throttling on a 390 px viewport; lazy-load MapLibre in `src/components/map/MapView.tsx`; serve compressed photo thumbnails
-- [ ] T089 Security review of `src/app/api/` and `supabase/migrations/`: service-role key only in server files, every RPC checks `app_role()`, no SOS data in any public response, secrets absent from git history
-- [ ] T090 Deploy to Vercel with the Supabase environment variables; run `npm test` against the deployed preview where applicable
-- [ ] T091 Run every scenario in `specs/001-disaster-response-platform/quickstart.md` (V1 to V14) and record pass or fail in `specs/001-disaster-response-platform/checklists/demo-validation.md`
+- [X] T086 [P] Write `README.md`: what Bakunawa is, stack summary linking research.md, Docker-based setup, demo accounts, demo script following quickstart.md
+- [X] T087 Accessibility pass on all pages in `src/app/`: 4.5:1 text contrast, focus states, labels on icon buttons, keyboard access to the layer panel and dialogs
+- [ ] T088 (partial: style.load pins, fewer fonts, preconnect done; SC-004 not met, see checklists/demo-validation.md) Performance pass: check SC-004 with Chrome slow 3G throttling on a 390 px viewport; lazy-load MapLibre in `src/components/map/MapView.tsx`; serve compressed photo thumbnails
+- [X] T089 Security review of `src/app/api/` and `supabase/migrations/`: service-role key only in server files, every RPC checks `app_role()`, no SOS data in any public response, secrets absent from git history
+- [ ] T090 (blocked: needs team Vercel and hosted Supabase accounts) Deploy to Vercel with the Supabase environment variables; run `npm test` against the deployed preview where applicable
+- [X] T091 Run every scenario in `specs/001-disaster-response-platform/quickstart.md` (V1 to V14) and record pass or fail in `specs/001-disaster-response-platform/checklists/demo-validation.md`
 
 ---
 

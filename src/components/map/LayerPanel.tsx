@@ -54,8 +54,9 @@ export function LayerPanel({ enabled, counts, onToggle, canSeeSos }: Props) {
                     </span>
                     <span className="flex-1 truncate">{l.label}</span>
                     {l.kind === "sos" ? (
-                      <span className="text-muted" aria-label="Restricted">
+                      <span className="text-muted">
                         <Icon name="lock" size={14} />
+                        <span className="sr-only">Restricted</span>
                       </span>
                     ) : (
                       <span className="text-[12px] text-muted">{counts[l.id] || ""}</span>

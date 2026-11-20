@@ -48,7 +48,7 @@ export function PlaceSearch({
   return (
     <div className={`relative ${className}`}>
       <div className={`flex items-center gap-2 ${inputClassName}`}>
-        {leading ?? <Icon name="search" size={18} color="#7a8a7f" />}
+        {leading ?? <Icon name="search" size={18} color="#627266" />}
         <input
           type="search"
           value={q}

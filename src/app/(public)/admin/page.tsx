@@ -130,7 +130,7 @@ function Facilities({ isAdmin }: { isAdmin: boolean }) {
                           style={
                             f.status === s
                               ? { background: FACILITY_STATUS_META[s].bg, color: FACILITY_STATUS_META[s].fg }
-                              : { color: "#7a8a7f" }
+                              : { color: "#627266" }
                           }
                         >
                           {FACILITY_STATUS_META[s].label}

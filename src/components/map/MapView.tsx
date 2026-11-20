@@ -80,7 +80,9 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView(
     map.current = m;
     const markerStore = markers.current;
 
-    m.on("load", () => {
+    // style.load fires once the style JSON is in, before tiles and label fonts. Adding our
+    // sources here lets pins appear without waiting for the basemap (SC-004 on slow networks).
+    m.once("style.load", () => {
       applyPalette(m);
       m.addSource("areas", { type: "geojson", data: emptyFc() });
       m.addLayer({
@@ -162,7 +164,8 @@ export const MapView = forwardRef<MapViewHandle, Props>(function MapView(
   useEffect(() => {
     pointIndex.current = new Map(points.map((p) => [p.id, p]));
     const m = map.current;
-    if (m?.isStyleLoaded() && m.getSource("points")) setData(m, pointIndex.current, areas);
+    // Only the source must exist; isStyleLoaded() stays false while basemap tiles load.
+    if (m?.getSource("points")) setData(m, pointIndex.current, areas);
   }, [points, areas]);
 
   // Selection highlight.

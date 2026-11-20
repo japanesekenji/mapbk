@@ -22,7 +22,7 @@ export function ListToolbar({ value, onChange }: { value: ListFilters; onChange:
   return (
     <div className="flex flex-wrap items-center gap-3">
       <label className="flex h-11 w-full items-center gap-2 rounded-xl border border-line bg-white px-3 md:w-[340px]">
-        <Icon name="search" size={18} color="#7a8a7f" />
+        <Icon name="search" size={18} color="#627266" />
         <input
           type="search"
           value={value.q}
