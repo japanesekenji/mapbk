@@ -243,12 +243,22 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "app_role":
+            "admin_list_users":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "created_at": string,"display_name": string,"email": string,"id": string,"role": Database["public"]['Enums']["app_role"]
+            }[]
+                           },
+"app_role":
 { Args: Record<PropertyKey, never>; Returns: Database["public"]['Enums']["app_role"]
                            },
 "facilities_in_bbox":
 { Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"types"?: (Database["public"]['Enums']["facility_type"])[] }; Returns: {
               "address": string,"capacity": number,"contact_phone": string,"id": string,"is_stale": boolean,"lat": number,"lng": number,"name": string,"status": Database["public"]['Enums']["facility_status"],"status_updated_at": string,"type": Database["public"]['Enums']["facility_type"]
+            }[]
+                           },
+"facilities_near":
+{ Args: { "lat": number,"lng": number,"max_results"?: number,"radius_km"?: number,"types"?: (Database["public"]['Enums']["facility_type"])[] }; Returns: {
+              "address": string,"capacity": number,"contact_phone": string,"distance_km": number,"id": string,"is_stale": boolean,"lat": number,"lng": number,"name": string,"status": Database["public"]['Enums']["facility_status"],"status_updated_at": string,"type": Database["public"]['Enums']["facility_type"]
             }[]
                            },
 "in_service_area":
@@ -299,6 +309,9 @@ isOneToOne: false
 "require_role":
 { Args: { "allowed": (Database["public"]['Enums']["app_role"])[] }; Returns: undefined
                            },
+"set_facility_status":
+{ Args: { "facility_id": string,"new_status": Database["public"]['Enums']["facility_status"] }; Returns: Json
+                           },
 "set_incident_status":
 { Args: { "expected_status": Database["public"]['Enums']["incident_status"],"incident_id": string,"new_severity"?: Database["public"]['Enums']["severity"],"new_status": Database["public"]['Enums']["incident_status"],"note"?: string }; Returns: Json
                            },
@@ -327,6 +340,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"set_user_role":
+{ Args: { "new_role": Database["public"]['Enums']["app_role"],"user_id": string }; Returns: Json
+                           },
 "sos_in_bbox":
 { Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"states"?: (Database["public"]['Enums']["sos_state"])[] }; Returns: {
               "assigned_name": string | null,

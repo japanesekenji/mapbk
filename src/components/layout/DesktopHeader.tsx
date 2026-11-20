@@ -24,8 +24,9 @@ export function DesktopHeader() {
   if (canSeeSos(profile?.role)) {
     nav.push({ href: "/respond", label: "Respond", icon: "alert", match: (p) => p.startsWith("/respond") });
   }
-  if (profile?.role === "admin") {
-    nav.push({ href: "/admin", label: "Admin", icon: "sliders", match: (p) => p.startsWith("/admin") });
+  if (canModerate(profile?.role)) {
+    const label = profile?.role === "admin" ? "Admin" : "Facility status";
+    nav.push({ href: "/admin", label, icon: "home", match: (p) => p.startsWith("/admin") });
   }
   nav.push({ href: "/profile", label: "Settings", icon: "sliders", match: (p) => p.startsWith("/profile") });
 

@@ -190,13 +190,13 @@ management and CSV import.
 
 **Independent Test**: quickstart V11 and V12.
 
-- [ ] T075 [US5] Create `supabase/migrations/0501_facilities_rpc.sql`: functions `facilities_near` (true distance with `ST_DWithin` and `ST_Distance` on geography, `is_stale` from data-model.md facilities.status_updated_at) and `set_facility_status` (sets data-model.md facilities.status, facilities.status_updated_at, facilities.status_updated_by) per contracts/database.md
-- [ ] T076 [P] [US5] Create `src/components/facilities/FacilityRow.tsx`: name, type icon, distance in km, status chip (Open, Full, Closed, Unknown), last-updated time, "may be outdated" label, call and Directions actions
-- [ ] T077 [US5] Create `src/app/(public)/facilities/page.tsx`: asks for location (fallback: map center), lists `facilities_near` nearest first, type filter chips, shows the facility on the map on tap
-- [ ] T078 [P] [US5] Create `src/lib/validation/facility.ts`: zod schema for a facility row citing data-model.md facilities.name, facilities.type, facilities.location, facilities.address, facilities.contact_phone, facilities.capacity, facilities.status
-- [ ] T079 [US5] Create `src/app/api/facilities/import/route.ts` per contracts/http-api.md "POST /api/facilities/import": admin only, CSV up to 2 MB parsed with `papaparse`, validates each row with `src/lib/validation/facility.ts`, returns inserted, skipped and per-row errors
-- [ ] T080 [US5] Create `src/app/(public)/admin/page.tsx`: admin only; facility list with add and edit forms and status buttons (`set_facility_status`, also allowed for moderators), CSV upload calling the import route, and a user role table calling `set_user_role`
-- [ ] T081 [US5] Create `supabase/migrations/0502_admin_rpc.sql`: function `set_user_role` per contracts/database.md, admin only, updating data-model.md profiles.role
+- [X] T075 [US5] Create `supabase/migrations/0501_facilities_rpc.sql`: functions `facilities_near` (true distance with `ST_DWithin` and `ST_Distance` on geography, `is_stale` from data-model.md facilities.status_updated_at) and `set_facility_status` (sets data-model.md facilities.status, facilities.status_updated_at, facilities.status_updated_by) per contracts/database.md
+- [X] T076 [P] [US5] Create `src/components/facilities/FacilityRow.tsx`: name, type icon, distance in km, status chip (Open, Full, Closed, Unknown), last-updated time, "may be outdated" label, call and Directions actions
+- [X] T077 [US5] Create `src/app/(public)/facilities/page.tsx`: asks for location (fallback: map center), lists `facilities_near` nearest first, type filter chips, shows the facility on the map on tap
+- [X] T078 [P] [US5] Create `src/lib/validation/facility.ts`: zod schema for a facility row citing data-model.md facilities.name, facilities.type, facilities.location, facilities.address, facilities.contact_phone, facilities.capacity, facilities.status
+- [X] T079 [US5] Create `src/app/api/facilities/import/route.ts` per contracts/http-api.md "POST /api/facilities/import": admin only, CSV up to 2 MB parsed with `papaparse`, validates each row with `src/lib/validation/facility.ts`, returns inserted, skipped and per-row errors
+- [X] T080 [US5] Create `src/app/(public)/admin/page.tsx`: admin only; facility list with add and edit forms and status buttons (`set_facility_status`, also allowed for moderators), CSV upload calling the import route, and a user role table calling `set_user_role`
+- [X] T081 [US5] Create `supabase/migrations/0502_admin_rpc.sql`: function `set_user_role` per contracts/database.md, admin only, updating data-model.md profiles.role
 
 **Checkpoint**: facilities work alone on seeded data.
 
