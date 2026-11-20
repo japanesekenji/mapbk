@@ -18,7 +18,8 @@
     "test:db": "vitest run --project db",
     "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run test:db && npm run test:e2e",
-    "db:types": "supabase gen types typescript --schema public > src/lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --schema public > src/lib/supabase/database.types.ts",
+    "postinstall": "node scripts/copy-maplibre-worker.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

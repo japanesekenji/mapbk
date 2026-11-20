@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // Docker on Windows does not forward file events from bind mounts, so the dev container
+  // sets NEXT_WATCH_POLL=1 and Next.js polls for changes instead.
+  ...(process.env.NEXT_WATCH_POLL ? { watchOptions: { pollIntervalMs: 1000 } } : {}),
   images: {
     remotePatterns: [{ protocol: "https", hostname: "*.supabase.co" }],
   },

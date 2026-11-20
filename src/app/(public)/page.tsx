@@ -1,3 +1,10 @@
+import { Suspense } from "react";
+import { MapScreen } from "@/components/map/MapScreen";
+
 export default function MapPage() {
-  return <div className="p-6">Map coming in Phase 3.</div>;
+  return (
+    <Suspense>
+      <MapScreen />
+    </Suspense>
+  );
 }

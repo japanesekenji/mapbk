@@ -83,18 +83,18 @@ selection and live updates.
 
 **Independent Test**: quickstart V1 and V2 with seeded data.
 
-- [ ] T029 [US1] Extend `supabase/seed.sql` with about 40 Metro Manila incidents across every category, severity and status (including 2 affected areas with data-model.md incidents.area polygons) and about 25 facilities of every data-model.md facilities.type with mixed facilities.status values and some facilities.status_updated_at older than 24 h
-- [ ] T030 [US1] Create `supabase/migrations/0101_map_rpc.sql`: functions `incidents_in_bbox`, `incident_summary` and `facilities_in_bbox` per contracts/database.md (rejected rows never returned; max 1,000 rows)
-- [ ] T031 [P] [US1] Create the basemap style in `src/components/map/style.ts` using OpenFreeMap vector tiles with land, water, park and road colors from the handoff (research R3)
-- [ ] T032 [US1] Create `src/components/map/MapView.tsx`: MapLibre map centered on Metro Manila, refetches `incidents_in_bbox` and `facilities_in_bbox` on move end (debounced), clustered GeoJSON source (FR-013), polygon layer for affected areas (FR-014), zoom and locate-me controls
-- [ ] T033 [P] [US1] Create `src/components/map/Pin.tsx`: teardrop pin per handoff (severity color, facility green, selected scale 1.2 with halo) using `layerIcon` from `src/components/icons/Icon.tsx`
-- [ ] T034 [P] [US1] Create `src/components/map/LayerPanel.tsx`: four groups and rows from FR-007 with checkbox and count; SOS row shows a lock and is disabled unless the user's role is responder or admin
-- [ ] T035 [P] [US1] Create `src/components/map/FilterBar.tsx`: place search input calling `/api/geocode`, time-range segments (1 h, 24 h, 7 d, 30 d), "Live · N min ago" indicator (FR-012)
-- [ ] T036 [US1] Create `src/app/api/geocode/route.ts` per contracts/http-api.md "GET /api/geocode": Nominatim with `countrycodes=ph`, generic User-Agent, 1 request per second, 24-hour in-memory cache, `degraded` fallback (research R10)
-- [ ] T037 [P] [US1] Create `src/components/map/IncidentCard.tsx` (desktop detail card) and `src/components/map/BottomSheet.tsx` (mobile): icon tile, title, place and time, StatusChip, description, verification progress bar per data-model.md "Verification progress bar", Corroborate button (read-only count for now) and Directions link
-- [ ] T038 [P] [US1] Create `src/components/map/SummaryPanel.tsx`: active total and severity bars from `incident_summary`, "Recent reports" rows that select the marker on click (FR-011)
-- [ ] T039 [US1] Assemble `src/app/(public)/page.tsx`: desktop three-column layout (LayerPanel, map column, SummaryPanel) and mobile layout (search pill, layer chips, SOS pill, locate FAB, BottomSheet) per handoff 1a and 1c, with layer, time-range and selection state from the handoff "State Management" section
-- [ ] T040 [US1] Create `src/lib/realtime.ts` and wire it into `src/app/(public)/page.tsx`: subscribe to `incidents-changes` (contracts/database.md Realtime) to refresh markers and the summary, with a 60-second refetch fallback (research R9)
+- [X] T029 [US1] Extend `supabase/seed.sql` with about 40 Metro Manila incidents across every category, severity and status (including 2 affected areas with data-model.md incidents.area polygons) and about 25 facilities of every data-model.md facilities.type with mixed facilities.status values and some facilities.status_updated_at older than 24 h
+- [X] T030 [US1] Create `supabase/migrations/0101_map_rpc.sql`: functions `incidents_in_bbox`, `incident_summary` and `facilities_in_bbox` per contracts/database.md (rejected rows never returned; max 1,000 rows)
+- [X] T031 [P] [US1] Create the basemap style in `src/components/map/style.ts` using OpenFreeMap vector tiles with land, water, park and road colors from the handoff (research R3)
+- [X] T032 [US1] Create `src/components/map/MapView.tsx`: MapLibre map centered on Metro Manila, refetches `incidents_in_bbox` and `facilities_in_bbox` on move end (debounced), clustered GeoJSON source (FR-013), polygon layer for affected areas (FR-014), zoom and locate-me controls
+- [X] T033 [P] [US1] Create `src/components/map/Pin.tsx`: teardrop pin per handoff (severity color, facility green, selected scale 1.2 with halo) using `layerIcon` from `src/components/icons/Icon.tsx`
+- [X] T034 [P] [US1] Create `src/components/map/LayerPanel.tsx`: four groups and rows from FR-007 with checkbox and count; SOS row shows a lock and is disabled unless the user's role is responder or admin
+- [X] T035 [P] [US1] Create `src/components/map/FilterBar.tsx`: place search input calling `/api/geocode`, time-range segments (1 h, 24 h, 7 d, 30 d), "Live · N min ago" indicator (FR-012)
+- [X] T036 [US1] Create `src/app/api/geocode/route.ts` per contracts/http-api.md "GET /api/geocode": Nominatim with `countrycodes=ph`, generic User-Agent, 1 request per second, 24-hour in-memory cache, `degraded` fallback (research R10)
+- [X] T037 [P] [US1] Create `src/components/map/IncidentCard.tsx` (desktop detail card) and `src/components/map/BottomSheet.tsx` (mobile): icon tile, title, place and time, StatusChip, description, verification progress bar per data-model.md "Verification progress bar", Corroborate button (read-only count for now) and Directions link
+- [X] T038 [P] [US1] Create `src/components/map/SummaryPanel.tsx`: active total and severity bars from `incident_summary`, "Recent reports" rows that select the marker on click (FR-011)
+- [X] T039 [US1] Assemble `src/app/(public)/page.tsx`: desktop three-column layout (LayerPanel, map column, SummaryPanel) and mobile layout (search pill, layer chips, SOS pill, locate FAB, BottomSheet) per handoff 1a and 1c, with layer, time-range and selection state from the handoff "State Management" section
+- [X] T040 [US1] Create `src/lib/realtime.ts` and wire it into `src/app/(public)/page.tsx`: subscribe to `incidents-changes` (contracts/database.md Realtime) to refresh markers and the summary, with a 60-second refetch fallback (research R9)
 
 **Checkpoint**: US1 works alone on seeded data (quickstart V1, V2).
 

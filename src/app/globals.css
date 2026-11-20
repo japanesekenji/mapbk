@@ -56,3 +56,68 @@ body {
 .font-display {
   font-family: var(--font-display);
 }
+
+/* Map pins (design handoff 1a): teardrop, white border, severity color. */
+.bk-pin {
+  position: relative;
+  width: 38px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.bk-pin-body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--pin-color);
+  border: 3px solid #fff;
+  box-shadow: var(--bk-shadow-pin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: transform 0.15s ease;
+}
+.bk-pin-body svg {
+  transform: rotate(45deg);
+}
+.bk-pin-halo {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 19px;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--pin-color) 15%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--pin-color) 40%, transparent);
+  pointer-events: none;
+}
+.bk-pin.is-selected {
+  z-index: 5;
+}
+.bk-pin.is-selected .bk-pin-body {
+  transform: rotate(-45deg) scale(1.2);
+}
+.bk-pin.is-selected .bk-pin-halo {
+  display: block;
+}
+.bk-user-dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bk-green);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 17px color-mix(in srgb, var(--bk-green) 18%, transparent);
+}
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}

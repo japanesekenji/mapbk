@@ -116,9 +116,42 @@ isOneToOne: false
             "app_role":
 { Args: Record<PropertyKey, never>; Returns: Database["public"]['Enums']["app_role"]
                            },
+"facilities_in_bbox":
+{ Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"types"?: (Database["public"]['Enums']["facility_type"])[] }; Returns: {
+              "address": string,"capacity": number,"contact_phone": string,"id": string,"is_stale": boolean,"lat": number,"lng": number,"name": string,"status": Database["public"]['Enums']["facility_status"],"status_updated_at": string,"type": Database["public"]['Enums']["facility_type"]
+            }[]
+                           },
 "in_service_area":
 { Args: { "p": unknown }; Returns: boolean
                            },
+"incident_summary":
+{ Args: { "max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"since"?: string }; Returns: Json
+                           },
+"incidents_in_bbox":
+{ Args: { "category_ids"?: (string)[],"max_lat": number,"max_lng": number,"min_lat": number,"min_lng": number,"since"?: string,"statuses"?: (Database["public"]['Enums']["incident_status"])[] }; Returns: {
+              "area_geojson": Json | null,
+"category_group": Database["public"]['Enums']["category_group"],
+"category_id": string,
+"category_label": string,
+"corroboration_count": number,
+"description": string,
+"id": string,
+"lat": number | null,
+"lng": number | null,
+"place_name": string | null,
+"reported_at": string,
+"reporter_name": string | null,
+"severity": Database["public"]['Enums']["severity"],
+"status": Database["public"]['Enums']["incident_status"],
+"title": string,
+"updated_at": string
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "incidents_public"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "rate_limit_hit":
 { Args: { "p_action": string,"p_limit": number,"p_subject": string }; Returns: number
                            }
