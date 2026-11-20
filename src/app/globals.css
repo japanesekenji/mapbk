@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme inline {
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-instrument), system-ui, sans-serif;
+
+  --color-ink: var(--bk-ink);
+  --color-green: var(--bk-green);
+  --color-green-tint: var(--bk-green-tint);
+  --color-chip-green: var(--bk-chip-green);
+  --color-live: var(--bk-live);
+  --color-text-2: var(--bk-text-2);
+  --color-text-3: var(--bk-text-3);
+  --color-text-4: var(--bk-text-4);
+  --color-body: var(--bk-text-body);
+  --color-muted: var(--bk-muted);
+  --color-app: var(--bk-bg);
+  --color-app-mobile: var(--bk-bg-mobile);
+  --color-card: var(--bk-card);
+  --color-line: var(--bk-border);
+  --color-divider: var(--bk-divider);
+  --color-hover: var(--bk-row-hover);
+  --color-critical: var(--bk-critical);
+  --color-high: var(--bk-high);
+  --color-moderate: var(--bk-moderate);
+  --color-low: var(--bk-low);
+  --color-sos: var(--bk-critical);
+  --color-sos-bg: var(--bk-sos-bg);
+  --color-sos-border: var(--bk-sos-border);
+
+  --shadow-card: var(--bk-shadow-card);
+  --shadow-control: var(--bk-shadow-control);
+  --shadow-pin: var(--bk-shadow-pin);
+  --shadow-sos: var(--bk-shadow-sos);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bk-bg);
+  color: var(--bk-text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--bk-green);
+  outline-offset: 2px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}

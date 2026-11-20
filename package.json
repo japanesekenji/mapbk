@@ -1,0 +1,51 @@
+{
+  "name": "bakunawa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "sb:start": "supabase start",
+    "sb:stop": "supabase stop",
+    "sb:status": "supabase status",
+    "db:reset": "supabase db reset",
+    "db:push": "supabase db push --db-url \"$SUPABASE_DB_URL\"",
+    "db:seed": "psql \"$SUPABASE_DB_URL\" -v ON_ERROR_STOP=1 -f supabase/seed.sql",
+    "test:unit": "vitest run --project unit",
+    "test:db": "vitest run --project db",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:db && npm run test:e2e",
+    "db:types": "supabase gen types typescript --schema public > src/lib/supabase/database.types.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.2",
+    "browser-image-compression": "^2.0.2",
+    "maplibre-gl": "^6.19.0",
+    "next": "16.4.6",
+    "papaparse": "^5.7.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^18.0.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "supabase": "^3.2.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.1"
+  }
+}

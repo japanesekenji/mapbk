@@ -1,0 +1,59 @@
+/* Design tokens from the Bakunawa design handoff (README "Design Tokens"). */
+:root {
+  /* Brand and text */
+  --bk-ink: #0e2a1a;
+  --bk-green: #1b5e32;
+  --bk-green-tint: #e6f1e7;
+  --bk-chip-green: #dff0e1;
+  --bk-live: #2e9e4f;
+  --bk-live-halo: #d5ecd9;
+  --bk-text-2: #5a6b5f;
+  --bk-text-3: #44574a;
+  --bk-text-4: #2c4234;
+  --bk-text-body: #1c3326;
+  --bk-muted: #7a8a7f;
+  --bk-table-head: #6b7c70;
+
+  /* Surfaces */
+  --bk-bg: #f3f6f1;
+  --bk-bg-mobile: #f6f8f4;
+  --bk-card: #ffffff;
+  --bk-border: #e3e9e1;
+  --bk-divider: #edf1ea;
+  --bk-checkbox: #b9c4bb;
+  --bk-step-empty: #dfe6dd;
+  --bk-row-hover: #f7faf6;
+
+  /* Severity */
+  --bk-critical: #c8362b;
+  --bk-high: #e0662a;
+  --bk-moderate: #cf9a14;
+  --bk-low: #5d8a66;
+  --bk-facility: #1b5e32;
+
+  /* Status chips */
+  --bk-verified-bg: #dff0e1;
+  --bk-verified-fg: #1b5e32;
+  --bk-pending-bg: #fbefc9;
+  --bk-pending-fg: #7a5600;
+  --bk-resolved-bg: #e3ebf2;
+  --bk-resolved-fg: #34546e;
+  --bk-rejected-bg: #f3e1df;
+  --bk-rejected-fg: #8a2a22;
+
+  /* SOS */
+  --bk-sos-bg: #fdf1ef;
+  --bk-sos-border: #f0d6d2;
+  --bk-sos-ring: #f8d9d5;
+
+  /* Map */
+  --bk-map-land: #eef2ea;
+  --bk-map-water: #cde2e6;
+  --bk-map-park: #dbe9d5;
+
+  /* Shadows */
+  --bk-shadow-card: 0 12px 36px rgba(14, 42, 26, 0.2);
+  --bk-shadow-control: 0 4px 14px rgba(14, 42, 26, 0.16);
+  --bk-shadow-pin: 0 4px 10px rgba(14, 42, 26, 0.35);
+  --bk-shadow-sos: 0 8px 20px rgba(200, 54, 43, 0.4);
+}
