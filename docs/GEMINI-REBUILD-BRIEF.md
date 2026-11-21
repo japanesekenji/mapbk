@@ -7,6 +7,8 @@ prepared code is not allowed, use only the documents in tier C and write everyth
 
 **1-hour scope:** P1 stories only: map (US1), SOS (US3), report (US2), then deploy.
 Verification, facilities and the incident list (US4 to US6) are stretch goals.
+**30-minute option:** if prepared code is allowed, use section 7 instead (copy almost everything,
+Gemini writes 6 pages).
 
 ## 1. Mac setup (before the event, 10 minutes)
 
@@ -130,7 +132,57 @@ bakunawa/
 | Map data empty a day later | Seed times are relative; re-run seed.sql before the demo |
 | Public demo password | README password is public; reset demo account passwords on hosted projects |
 
-## 7. Done checklist
+## 7. 30-minute variant (copy almost everything; Gemini writes 6 pages)
+
+Use this when the rules allow prepared code. About 90% of the code is copied; Gemini assembles
+the remaining pages from copied components and deploys. Dry run on 2026-11-21: the copied set
+alone installs, type-checks, lints with 0 errors and builds (routes `/profile`, `/report`,
+`/respond`, `/sos` and all 6 API routes).
+
+**Copy** (from an empty project folder; `REF` is a clone of `mapbk`):
+
+```bash
+git clone git@github.com:japanesekenji/mapbk.git ~/mapbk          # once, before the event
+mkdir ~/bakunawa && cd ~/bakunawa
+REF=~/mapbk sh ~/mapbk/scripts/copy-30min.sh
+npm ci                                                             # about 1 to 2 minutes
+cp ~/mapbk/.env.example .env.local                                 # then paste the 3 Supabase values
+```
+
+The script copies: `package.json`, `package-lock.json`, `tsconfig.json`, `eslint.config.mjs`,
+`.gitignore`, `next.config.ts`, `vercel.json`, `.env.example`, `public/brand/`,
+`scripts/copy-maplibre-worker.mjs`, `supabase/` (config, seed, 17 migrations), `src/proxy.ts`,
+`src/styles/`, `src/lib/` (all, including generated types), `src/components/` (all),
+`src/app/api/` (6 routes), `src/app/layout.tsx`, `src/app/globals.css`,
+`src/app/(public)/layout.tsx`, the 4 heavy pages `report`, `sos`, `respond`, `profile`, plus
+`specs/`, the constitution and `docs/`. Then create `GEMINI.md` from section 4 and add the line:
+"All files except the 6 pages listed in section 7 are copied; do not modify them."
+
+**Gemini writes these 6 pages** (paste one prompt at a time; each names the copied pieces to use):
+
+| # | File | Prompt |
+|---|---|---|
+| 1 | `src/app/(public)/page.tsx` | "Create the map page: a default export that renders `<MapScreen />` from `@/components/map/MapScreen` inside React `<Suspense>`. Nothing else." |
+| 2 | `src/app/(public)/incidents/page.tsx` | "Create the incident list page: default export rendering `<IncidentList />` from `@/components/incidents/IncidentList` inside `<Suspense>`." |
+| 3 | `src/app/(public)/facilities/page.tsx` | "Create the facilities page (US5, FR-036 to FR-038) as a client component. Get the device location with `navigator.geolocation` (fallback `DEFAULT_VIEW` from `@/lib/geo`). Call `getBrowserClient().rpc('facilities_near', { lat, lng, radius_km: 50, types, max_results: 50 })`. Show a green card linking `directionsUrl()` to the nearest open evacuation center, type filter chips (All plus `FACILITY_META` plurals from `@/lib/taxonomy`), and a list of `<FacilityRow f={row} />` from `@/components/facilities/FacilityRow`. Use `LoadingRows`, `EmptyState`, `ErrorState` from `@/components/layout/States`. Title 'Emergency facilities' in `font-display`." |
+| 4 | `src/app/(public)/incidents/[id]/page.tsx` | "Create the incident detail page (FR-043) as a client component. Read `id` with `useParams`. Load `rpc('incident_detail', { incident_id: id })` (returns jsonb: title, description, category_id, category_label, lat, lng, place_name, severity, status, corroboration_count, reported_at, reporter_name, location_accuracy_m, photo_paths[], history[] with from_status, to_status, from_severity, to_severity, note, changed_at, changed_by_name). Reload with `useLiveRefresh('incidents', load)`. Show: back link to /incidents, colored icon tile (`CATEGORY_ICON`, `SEVERITY_META`), title, `StatusChip`, `SeverityDot`, description, photos via `usePhotoUrls(photo_paths)`, `VerificationBar`, `CorroborateButton` driven by `useCorroboration(id, count)`, `DirectionsButton` from `@/components/map/SelectionDetail`, `ModerationControls` when `canModerate(profile?.role)` (from `useProfile`), and a 'Status history' list with `STATUS_META` labels and `formatPht` times. Null result shows `EmptyState` 'Incident not found'." |
+| 5 | `src/app/(public)/moderate/page.tsx` | "Create the moderation queue (FR-029) as a client component. Non-moderators (`canModerate`) see `EmptyState` 'Moderators only'. Load `rpc('moderation_queue')` (oldest pending first) and refresh with `useLiveRefresh('incidents', load)`. Each item: icon tile, title linking to `/incidents/[id]`, category, place, `timeAgo`, reporter name, `SeverityDot`, corroboration count, description, photo thumbnails via `usePhotoUrls(row.photo_paths)`, and `<ModerationControls compact incidentId status severity onChanged />`; remove the item when its new status is not 'pending'." |
+| 6 | `src/app/(public)/admin/page.tsx` (optional, cut first) | "Create the admin page. Moderators and admins: facility table from `rpc('facilities_in_bbox', { min_lng: 116, min_lat: 4.5, max_lng: 127, max_lat: 21.5 })` with status buttons calling `rpc('set_facility_status')`. Admins only: CSV upload posting `FormData` field `file` to `/api/facilities/import` (show inserted/skipped), and a users list from `rpc('admin_list_users')` with a role select calling `rpc('set_user_role')` (own row disabled)." |
+
+**Timeline:**
+
+| Time | Step |
+|---|---|
+| 0:00 to 0:05 | Run the copy script, `npm ci`, fill `.env.local`, create `GEMINI.md` |
+| 0:05 to 0:07 | `npm run dev`; check `/sos`, `/report`, `/profile` work against the hosted database |
+| 0:07 to 0:22 | Prompts 1 to 5 (prompt 6 only if ahead of time) |
+| 0:22 to 0:25 | `npm run typecheck && npm run lint`; fix anything Gemini got wrong |
+| 0:25 to 0:30 | Push to `main`; Vercel redeploys in about 3 minutes; check the live URL |
+
+Before the event, do one timed dry run of this variant on the Mac, and confirm the hackathon
+allows prepared code.
+
+## 8. Done checklist
 
 - Map shows clustered pins, layer counts and the severity summary; SOS layer locked for visitors.
 - Visitor sends SOS without signing in; responder sees it on `/respond` within 30 s.
